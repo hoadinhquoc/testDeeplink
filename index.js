@@ -7,7 +7,7 @@ app.use(express.static(__dirname + '/public'))
 app.get('/', function(request, response) {
   let responseData = {};
   //responseData.push(request.headers);
-  response.send(JSON.stringify(request));
+  response.send(request.header);
 })
 
 app.listen(app.get('port'), function() {
