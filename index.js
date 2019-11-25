@@ -4,7 +4,7 @@ const express = require('express');
 const app = express();
 
 // server configuration
-const PORT = 8080;
+const PORT = 80;
 
 // create a route for the app
 app.get('/', (req, res) => {
