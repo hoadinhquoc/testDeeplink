@@ -1,17 +1,13 @@
-const express = require('express');
+var express = require('express')
+var app = express()
 
-// create new express app and save it as "app"
-const app = express();
+app.set('port', (process.env.PORT || 5000))
+app.use(express.static(__dirname + '/public'))
 
-// server configuration
-const PORT = 8080;
+app.get('/', function(request, response) {
+  response.send('Hello World!')
+})
 
-// create a route for the app
-app.get('/', (req, res) => {
-  res.send('Hello World');
-});
-
-// make the server listen to requests
-app.listen(PORT, () => {
-  console.log(`Server running at: http://localhost:${PORT}/`);
-});
+app.listen(app.get('port'), function() {
+  console.log("Node app is running at localhost:" + app.get('port'))
+})
