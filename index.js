@@ -8,9 +8,11 @@ app.use(express.static(__dirname + '/public'))
 app.get('/', function(request, response) {
   let responseData = [];
   responseData.push(request.headers);
-  var ua = uaParser(request.headers['user-agent']);
+  let ua = uaParser(request.headers['user-agent']);
 
-  response.send(JSON.stringify(ua, null, 2));
+  responseData.push(JSON.stringify(request.ips));
+
+  response.send(responseData);
 })
 
 app.get('/hello', function(request, response) {
