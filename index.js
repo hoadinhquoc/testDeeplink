@@ -20,13 +20,14 @@ const uri = "mongodb+srv://herokuDeeplink:test12345@testdeeplink-nu9zm.mongodb.n
 const client = new MongoClient(uri, { useNewUrlParser: true });
 client.connect(err => {
   const collection = client.db("test").collection("devices");
+  response.send(collection.collectionName);
   // perform actions on the collection object
   client.close();
 });
 
 
 
-  response.send(responseData);
+  //response.send(responseData);
 })
 
 app.get('/hello', function(request, response) {
