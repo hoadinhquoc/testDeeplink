@@ -10,7 +10,7 @@ app.get('/', function(request, response) {
   responseData.push(request.headers);
   let ua = uaParser(request.headers['user-agent']);
 
-  responseData.push(JSON.stringify(request.ips));
+  responseData.push(headers['x-forwarded-for']);
 
   response.send(responseData);
 })
