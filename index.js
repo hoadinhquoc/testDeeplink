@@ -1,5 +1,6 @@
-var express = require('express')
-var app = express()
+var express = require('express');
+var app = express();
+var uaParser = require('ua-parser-js');
 
 app.set('port', (process.env.PORT || 5000))
 app.use(express.static(__dirname + '/public'))
@@ -7,10 +8,9 @@ app.use(express.static(__dirname + '/public'))
 app.get('/', function(request, response) {
   let responseData = [];
   responseData.push(request.headers);
-  responseData.push(request.rawHeaders);
-  responseData.push(request.ip);
-  responseData.push(request.get('User-Agent'));
-  response.send(responseData);
+  var ua = uaParser(request.headers['user-agent']);
+
+  response.send(JSON.stringify(ua, null, 2));
 })
 
 app.get('/hello', function(request, response) {
