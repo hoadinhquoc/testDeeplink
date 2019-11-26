@@ -4,7 +4,8 @@
   "description": "For test purpose",
   "main": "index.js",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "nodemon": "^2.0.1",
     "ua-parser-js": "^0.7.20"
   },
   "devDependencies": {},
