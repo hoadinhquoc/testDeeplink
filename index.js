@@ -7,36 +7,27 @@ app.use(express.static(__dirname + '/public'))
 
 const MongoClient = require('mongodb').MongoClient;
 const uri = "mongodb+srv://herokuDeeplink:test12345@testdeeplink-nu9zm.mongodb.net/test?retryWrites=true&w=majority";
-const client = new MongoClient(uri, { useUnifiedTopology: true });
-
-
+//const client = new MongoClient(uri, { useUnifiedTopology: true });
 
 app.get('/', function(request, response) {
   let responseData = [];
   responseData.push(request.headers);
   let ua = uaParser(request.headers['user-agent']);
-
+  responseData.push(ua);
   responseData.push(request.headers['x-forwarded-for']);
 
-  //response.send(responseData);
-  client.connect(err => {
-    console.log(JSON.stringify(err));
-    responseData.push(JSON.stringify(err));
-  
-    const db = client.db("sample_training");
-    const collection = db.collection("stories");
-  
-    //let dataPiece = collection.findOne( {id: "19970068"}, (err, result)=>{
-    let dataPiece = collection.findOne();
-    collection.countDocuments((result)=>{
-      responseData.push(result);
+  MongoClient.connect(uri, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db("sample_training");
+    dbo.collection("stories").findOne({}, function(err, result) {
+      if (err) throw err;
+      console.log(result.name);
+
+      responseData.push(JSON.stringify(result));
+
       response.send(responseData);
-      client.close();
+      db.close();
     });
-    console.log(JSON.stringify(dataPiece));
-    //responseData.push(JSON.stringify(dataPiece));
-    //responseData.push(dataPiece.description);
-    
   });
 })
 
