@@ -91,7 +91,7 @@ app.get('/app/checkGift', function(request, response) {
 
       if(err) response.send(JSON.stringify(err));
 
-      response.send("Data load SUCCESS: " + JSON.stringify(result.id));
+      response.send("Data load SUCCESS: " + JSON.stringify(result.toyID));
 
       db.close();
 
