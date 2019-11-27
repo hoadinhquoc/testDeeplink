@@ -80,13 +80,18 @@ app.get('/app/checkGift', function(request, response) {
     if (err) throw err;
     var dbo = db.db(DB_NAME);
 
-    dbo.collection(COLLECTION_NAME).findOneAndDelete(userData, (err, result)=>{
+    dbo.collection(COLLECTION_NAME).findOne(userData, (err, result)=>{
 
       if(err) response.send(JSON.stringify(err));
 
       response.send("Data load SUCCESS: " + JSON.stringify(result.toyID));
 
-      db.close();
+      dbo.collection(COLLECTION_NAME).deleteOne({_id:result._id},(err, obj)=>{
+
+        if (err) throw err;
+        
+        db.close();
+      });
 
     });
   });
