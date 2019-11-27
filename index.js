@@ -21,7 +21,7 @@ app.get('/', function(request, response) {
   //response.send(responseData);
   client.connect(err => {
     console.log(JSON.stringify(err));
-    JSON.stringify(JSON.stringify(err))
+    responseData.push(JSON.stringify(err));
   
     const db = client.db("sample_training");
     const collection = db.collection("stories");
