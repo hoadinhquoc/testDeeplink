@@ -31,7 +31,7 @@ app.get('/', function(request, response) {
   
     console.log(JSON.stringify(dataPiece));
     responseData.push(JSON.stringify(dataPiece));
-    response.send(JSON.stringify(dataPiece));
+    response.send(responseData);
     client.close();
   });
 })
