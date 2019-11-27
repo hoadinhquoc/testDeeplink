@@ -28,12 +28,15 @@ app.get('/', function(request, response) {
   
     //let dataPiece = collection.findOne( {id: "19970068"}, (err, result)=>{
     let dataPiece = collection.findOne();
-  
+    collection.countDocuments((result)=>{
+      responseData.push(result);
+      response.send(responseData);
+      client.close();
+    });
     console.log(JSON.stringify(dataPiece));
-    responseData.push(JSON.stringify(dataPiece));
-    responseData.push(dataPiece.description);
-    response.send(responseData);
-    client.close();
+    //responseData.push(JSON.stringify(dataPiece));
+    //responseData.push(dataPiece.description);
+    
   });
 })
 
