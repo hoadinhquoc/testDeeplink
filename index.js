@@ -14,13 +14,6 @@ const COLLECTION_NAME = "users_data";
 const TOY_ID_LIST = ["VV114", "VV200"];
 //////////
 
-
-app.get('/', function(request, response) {
-  
-});
-
-
-
 app.get('/:id', function(request, response) {
   let id = request.params.id;
 
