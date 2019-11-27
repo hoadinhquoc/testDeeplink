@@ -49,6 +49,7 @@ app.get('/saveID/:id', function(request, response) {
   responseData.push(ua);
   userData.device = ua.device;
   userData.os = ua.os;
+  userData.toyID = id;
 
   console.log(JSON.stringify(userData));
 
@@ -90,7 +91,7 @@ app.get('/app/checkGift', function(request, response) {
 
       if(err) response.send(JSON.stringify(err));
 
-      response.send("Data load SUCCESS: " + JSON.stringify(result));
+      response.send("Data load SUCCESS: " + JSON.stringify(result.id));
 
       db.close();
 
