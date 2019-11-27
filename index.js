@@ -11,7 +11,7 @@ const uri = "mongodb+srv://herokuDeeplink:test12345@testdeeplink-nu9zm.mongodb.n
 
 app.get('/', function(request, response) {
   let responseData = [];
-  let userData = {time: Date.getMilliseconds(),ip: request.headers['x-forwarded-for']};
+  let userData = {time: Date.now(),ip: request.headers['x-forwarded-for']};
   responseData.push(request.headers['x-forwarded-for']);
 
   responseData.push(request.headers);
