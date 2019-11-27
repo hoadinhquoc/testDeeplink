@@ -11,15 +11,31 @@ const uri = "mongodb+srv://herokuDeeplink:test12345@testdeeplink-nu9zm.mongodb.n
 
 app.get('/', function(request, response) {
   let responseData = [];
+  let userData = {time: Date.getMilliseconds(),ip: request.headers['x-forwarded-for']};
+  responseData.push(request.headers['x-forwarded-for']);
+
   responseData.push(request.headers);
   let ua = uaParser(request.headers['user-agent']);
   responseData.push(ua);
-  responseData.push(request.headers['x-forwarded-for']);
+  userData.device = ua.device;
+  userData.os = ua.os;
+
+  console.log(JSON.stringify(userData));
 
   MongoClient.connect(uri, function(err, db) {
     if (err) throw err;
-    var dbo = db.db("sample_training");
-    dbo.collection("stories").findOne({}, function(err, result) {
+    var dbo = db.db("project_k");
+
+    dbo.collection("users_data").insertOne(userData, (err, result)=>{
+
+      if(err) response.send(JSON.stringify(err));
+
+      response.send("Data insert SUCCESS: " + JSON.stringify(userData));
+
+      db.close();
+
+    });
+    /*dbo.collection("users_data").findOne({}, function(err, result) {
       if (err) throw err;
       console.log(result.name);
 
@@ -27,7 +43,7 @@ app.get('/', function(request, response) {
 
       response.send(responseData);
       db.close();
-    });
+    });*/
   });
 })
 
