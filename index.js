@@ -6,10 +6,40 @@ app.set('port', (process.env.PORT || 5000))
 app.use(express.static(__dirname + '/public'))
 
 const MongoClient = require('mongodb').MongoClient;
+//Config
 const uri = "mongodb+srv://herokuDeeplink:test12345@testdeeplink-nu9zm.mongodb.net/test?retryWrites=true&w=majority";
-//const client = new MongoClient(uri, { useUnifiedTopology: true });
+const DB_NAME = "project_k";
+const COLLECTION_NAME = "users_data";
+
+const TOY_ID_LIST = ["VV114", "VV200"];
+//////////
+
 
 app.get('/', function(request, response) {
+  
+});
+
+
+
+app.get('/:id', function(request, response) {
+  let id = request.params.id;
+
+  let isToyID = TOY_ID_LIST.includes(id);
+  let resString = "Redirect to another URL!!!";
+  if(isToyID)
+  {
+    resString = "You have toy " + id;
+  }
+  response.send(resString);
+});
+
+app.get('/saveID/:id', function(request, response) {
+  let id = request.params.id;
+
+  let isToyID = TOY_ID_LIST.includes(id);
+
+  if(!isToyID) response.send("WRONG TOY ID!!!");
+
   let responseData = [];
   let userData = {time: Date.now(),ip: request.headers['x-forwarded-for']};
   responseData.push(request.headers['x-forwarded-for']);
@@ -24,9 +54,9 @@ app.get('/', function(request, response) {
 
   MongoClient.connect(uri, function(err, db) {
     if (err) throw err;
-    var dbo = db.db("project_k");
+    var dbo = db.db(DB_NAME);
 
-    dbo.collection("users_data").insertOne(userData, (err, result)=>{
+    dbo.collection(COLLECTION_NAME).insertOne(userData, (err, result)=>{
 
       if(err) response.send(JSON.stringify(err));
 
@@ -35,22 +65,38 @@ app.get('/', function(request, response) {
       db.close();
 
     });
-    /*dbo.collection("users_data").findOne({}, function(err, result) {
-      if (err) throw err;
-      console.log(result.name);
-
-      responseData.push(JSON.stringify(result));
-
-      response.send(responseData);
-      db.close();
-    });*/
   });
-})
+});
 
-app.get('/hello', function(request, response) {
-  var id = request.query.id;
-  response.send("Hello " + id );
-})
+app.get('/app/checkGift', function(request, response) {
+  
+  let responseData = [];
+  let userData = {ip: request.headers['x-forwarded-for']};
+  responseData.push(request.headers['x-forwarded-for']);
+
+  responseData.push(request.headers);
+  let ua = uaParser(request.headers['user-agent']);
+  responseData.push(ua);
+  userData.device = ua.device;
+  userData.os = ua.os;
+
+  console.log(JSON.stringify(userData));
+
+  MongoClient.connect(uri, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db(DB_NAME);
+
+    dbo.collection(COLLECTION_NAME).findOne(userData, (err, result)=>{
+
+      if(err) response.send(JSON.stringify(err));
+
+      response.send("Data load SUCCESS: " + JSON.stringify(result));
+
+      db.close();
+
+    });
+  });
+});
 
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'))
