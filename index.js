@@ -18,6 +18,7 @@ app.get('/', function(request, response) {
 
   responseData.push(request.headers['x-forwarded-for']);
 
+  //response.send(responseData);
   client.connect(err => {
     console.log(JSON.stringify(err));
   
@@ -28,6 +29,8 @@ app.get('/', function(request, response) {
     let dataPiece = collection.findOne();
   
     console.log(JSON.stringify(dataPiece));
+    response.send(JSON.stringify(dataPiece));
+    client.close();
   });
 })
 
