@@ -40,9 +40,13 @@ app.get('/saveID/:id', function(request, response) {
   responseData.push(request.headers);
   let ua = uaParser(request.headers['user-agent']);
   responseData.push(ua);
-  userData.device = ua.device;
-  userData.os = ua.os;
-  userData.toyID = id;
+
+  userData.vendor = ua.device.vendor && ua.device.vendor.toLowerCase();
+  userData.model = ua.device.model && ua.device.model.toLowerCase();
+  userData.os = ua.os.name && ua.os.name.toLowerCase();
+  userData.osversion = ua.os.version && ua.os.version.toLowerCase();
+
+  userData.toyID = id.toLowerCase();
 
   console.log(JSON.stringify(userData));
 
@@ -76,7 +80,13 @@ app.get('/app/checkGift', function(request, response) {
 
   console.log(JSON.stringify(userData));
 
-  let appHeader = {vendor:request.headers["vendor"], model: request.headers["model"], "os-version": request.headers["os-version"]};
+  let appHeader = {vendor: request.headers["vendor"] && request.headers["vendor"].toLowerCase()
+                  , model: request.headers["model"] && request.headers["model"].toLowerCase()
+                  , osversion: request.headers["os-version"] && request.headers["os-version"].toLowerCase()};
+  appHeader.ip = request.headers['x-forwarded-for'];
+
+  userData = appHeader;
+  
   console.log(JSON.stringify(appHeader));
 
   MongoClient.connect(uri, function(err, db) {
