@@ -76,6 +76,9 @@ app.get('/app/checkGift', function(request, response) {
 
   console.log(JSON.stringify(userData));
 
+  let appHeader = {vendor:request.headers["vendor"], model: request.headers["model"], "os-version": request.headers["os-version"]};
+  console.log(JSON.stringify(appHeader));
+
   MongoClient.connect(uri, function(err, db) {
     if (err) throw err;
     var dbo = db.db(DB_NAME);
