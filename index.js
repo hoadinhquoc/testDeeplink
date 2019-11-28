@@ -84,15 +84,21 @@ app.get('/app/checkGift', function(request, response) {
 
       if(err) response.send(JSON.stringify(err));
 
-      response.send("Data load SUCCESS: " + JSON.stringify(result.toyID));
-
-      dbo.collection(COLLECTION_NAME).deleteOne({_id:result._id},(err, obj)=>{
-
-        if (err) throw err;
+      if(result)
+      {
+        response.send("Data load SUCCESS: " + JSON.stringify(result.toyID));
         
-        db.close();
-      });
+        dbo.collection(COLLECTION_NAME).deleteOne({_id:result._id},(err, obj)=>{
 
+          if (err) throw err;
+          
+          db.close();
+        });
+      }
+      else
+      {
+        response.send("No record found");
+      }
     });
   });
 });
