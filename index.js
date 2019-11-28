@@ -58,7 +58,7 @@ app.get('/saveID/:id', function(request, response) {
 
       if(err) response.send(JSON.stringify(err));
 
-      response.send("Data insert SUCCESS: " + JSON.stringify(userData));
+      response.send("Data insert SUCCESS: " + JSON.stringify(userData) + " **** " + JSON.stringify(responseData));
 
       db.close();
 
