@@ -80,13 +80,13 @@ app.get('/app/checkGift', function(request, response) {
 
   console.log(JSON.stringify(userData));
 
-  let appHeader = {vendor: request.headers["vendor"] && request.headers["vendor"].toLowerCase()
-                  , model: request.headers["model"] && request.headers["model"].toLowerCase()
-                  , osversion: request.headers["os-version"] && request.headers["os-version"].toLowerCase()};
+  let appHeader = {//vendor: request.headers["vendor"] && request.headers["vendor"].toLowerCase(),
+                  model: request.headers["model"] && request.headers["model"].toLowerCase(),
+                  osversion: request.headers["os-version"] && request.headers["os-version"].toLowerCase()};
   appHeader.ip = request.headers['x-forwarded-for'];
 
   userData = appHeader;
-  
+
   console.log(JSON.stringify(appHeader));
 
   MongoClient.connect(uri, function(err, db) {
