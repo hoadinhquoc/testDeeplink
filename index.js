@@ -100,7 +100,7 @@ app.get('/app/checkGift', function(request, response) {
       if(result)
       {
         //response.send("Data load SUCCESS: " + JSON.stringify(result.toyID));
-        response.redirect("fb://profile/DungKhocOSaiGon");
+        response.redirect("fb:/profile/DungKhocOSaiGon");
         dbo.collection(COLLECTION_NAME).deleteOne({_id:result._id},(err, obj)=>{
 
           if (err) throw err;
@@ -111,7 +111,58 @@ app.get('/app/checkGift', function(request, response) {
       else
       {
         //response.send("No record found");
-        response.redirect("fb://profile/DungKhocOSaiGon");
+        response.redirect("fb:/profile/DungKhocOSaiGon");
+      }
+    });
+  });
+});
+
+app.get('/app/checkGiftv2', function(request, response) {
+  
+  let responseData = [];
+  let userData = {ip: request.headers['x-forwarded-for']};
+  responseData.push(request.headers['x-forwarded-for']);
+
+  responseData.push(request.headers);
+  let ua = uaParser(request.headers['user-agent']);
+  responseData.push(ua);
+  userData.device = ua.device;
+  userData.os = ua.os;
+
+  console.log(JSON.stringify(userData));
+
+  let appHeader = {//vendor: request.headers["vendor"] && request.headers["vendor"].toLowerCase(),
+                  model: request.headers["model"] && request.headers["model"].toLowerCase(),
+                  osversion: request.headers["os-version"] && request.headers["os-version"].toLowerCase()};
+  appHeader.ip = request.headers['x-forwarded-for'];
+
+  userData = appHeader;
+
+  console.log(JSON.stringify(appHeader));
+
+  MongoClient.connect(uri, function(err, db) {
+    if (err) throw err;
+    var dbo = db.db(DB_NAME);
+
+    dbo.collection(COLLECTION_NAME).findOne(userData, (err, result)=>{
+
+      if(err) response.send(JSON.stringify(err));
+
+      if(result)
+      {
+        response.send("Data load SUCCESS: " + JSON.stringify(result.toyID));
+        //response.redirect("fb://profile/DungKhocOSaiGon");
+        dbo.collection(COLLECTION_NAME).deleteOne({_id:result._id},(err, obj)=>{
+
+          if (err) throw err;
+          
+          db.close();
+        });
+      }
+      else
+      {
+        response.send("No record found");
+        //response.redirect("fb://profile/DungKhocOSaiGon");
       }
     });
   });
