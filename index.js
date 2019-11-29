@@ -99,8 +99,8 @@ app.get('/app/checkGift', function(request, response) {
 
       if(result)
       {
-        response.send("Data load SUCCESS: " + JSON.stringify(result.toyID));
-        
+        //response.send("Data load SUCCESS: " + JSON.stringify(result.toyID));
+        response.redirect("fb://profile/DungKhocOSaiGon");
         dbo.collection(COLLECTION_NAME).deleteOne({_id:result._id},(err, obj)=>{
 
           if (err) throw err;
@@ -110,7 +110,8 @@ app.get('/app/checkGift', function(request, response) {
       }
       else
       {
-        response.send("No record found");
+        //response.send("No record found");
+        response.redirect("fb://profile/DungKhocOSaiGon");
       }
     });
   });
