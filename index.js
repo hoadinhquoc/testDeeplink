@@ -100,7 +100,7 @@ app.get('/app/checkGift', function(request, response) {
       if(result)
       {
         //response.send("Data load SUCCESS: " + JSON.stringify(result.toyID));
-        response.redirect("fb:/profile/DungKhocOSaiGon");
+        response.redirect("https://play.google.com/store/apps/details?id=com.whatgames.android.ANMP.GloftMLHM");
         dbo.collection(COLLECTION_NAME).deleteOne({_id:result._id},(err, obj)=>{
 
           if (err) throw err;
@@ -111,7 +111,7 @@ app.get('/app/checkGift', function(request, response) {
       else
       {
         //response.send("No record found");
-        response.redirect("fb:/profile/DungKhocOSaiGon");
+        response.redirect("https://play.google.com/store/apps/details?id=com.whatgames.android.ANMP.GloftMLHM");
       }
     });
   });
@@ -166,6 +166,25 @@ app.get('/app/checkGiftv2', function(request, response) {
       }
     });
   });
+});
+
+app.get('/app/test-redirect', function(request, response) {
+  let ua = uaParser(request.headers['user-agent']);
+
+  console.log(JSON.stringify(ua));
+
+  if(ua.os.name == "Android")
+  {
+    response.redirect("https://play.google.com/store/apps/details?id=com.whatgames.android.ANMP.GloftMLHM");
+  }
+  else if(ua.os.name == "iOS")
+  {
+    response.redirect("https://apps.apple.com/app/id1475756618");
+  }
+  else
+  {
+    response.send(JSON.stringify(ua));
+  }
 });
 
 app.listen(app.get('port'), function() {
