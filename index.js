@@ -99,8 +99,7 @@ app.get('/app/checkGift', function(request, response) {
 
       if(result)
       {
-        //response.send("Data load SUCCESS: " + JSON.stringify(result.toyID));
-        response.redirect("https://play.google.com/store/apps/details?id=com.whatgames.android.ANMP.GloftMLHM");
+        response.send("Data load SUCCESS: " + JSON.stringify(result.toyID));
         dbo.collection(COLLECTION_NAME).deleteOne({_id:result._id},(err, obj)=>{
 
           if (err) throw err;
@@ -110,8 +109,7 @@ app.get('/app/checkGift', function(request, response) {
       }
       else
       {
-        //response.send("No record found");
-        response.redirect("https://play.google.com/store/apps/details?id=com.whatgames.android.ANMP.GloftMLHM");
+        response.send("No record found");
       }
     });
   });
