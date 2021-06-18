@@ -185,6 +185,10 @@ app.get('/app/test-redirect', function(request, response) {
   }
 });
 
+app.get('/test-survey', function(request, response) {
+  response.redirect("./test-survey/surveyTest.html");
+});
+
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'))
 })
